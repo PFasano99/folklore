@@ -1,4 +1,4 @@
-# EnviromentalSimulation
+# Folklore
 
 Description to add
 
@@ -57,5 +57,12 @@ To develop this project the following has been used:
 | Graphics editor   | Krita 4.4.8          | 
 
 
-- **MOST OF THE MODELS IN THIS PROJECT HAVE NOT BEEN MADE BY ME**
-- **not every texture in this project have been made by me**
+---
+
+## Contact information
+
+If you have any problems to install this repository or need any clarification on the code please contact us at: 
+
+|Author             | Personal Mail             | Github                                                   |
+|-------------------|---------------------------|----------------------------------------------------------|
+| Paolo Fasano      | p.fasano99@hotmail.com    | <a href="https://github.com/PFasano99/">Paolo Fasano</a> |
