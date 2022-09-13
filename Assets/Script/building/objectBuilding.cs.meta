@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: e2615938bdc9bfc49bd039c4730f94dc
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - invisibleMaterial: {fileID: 2100000, guid: 57976ccb0132f46448924809378fb839, type: 2}
+  - toBuildMaterial: {fileID: 2100000, guid: 1dfc4a1d66046bc4ea6cc08050fa9160, type: 2}
+  - building: {instanceID: 0}
+  - hammerAudio: {fileID: 8300000, guid: 74e336476be774c418fc7b82bcbe063e, type: 3}
+  - hammerAudioSource: {instanceID: 0}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
