@@ -12,8 +12,12 @@ public class playerRotation : MonoBehaviour
     public Transform gun;
 
 
+    public bool canRotate = true;
+
     private float xRotation = 0f;
     private float yRotation = 0.0f;
+
+
 
     // Start is called before the first frame update
     void Start()
@@ -24,19 +28,23 @@ public class playerRotation : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        float mouseX = Input.GetAxis("Mouse X") * mouseSensitivity * Time.deltaTime;
-        float mouseY = Input.GetAxis("Mouse Y") * mouseSensitivity * Time.deltaTime;
+        if (canRotate)
+        {
+            float mouseX = Input.GetAxis("Mouse X") * mouseSensitivity * Time.deltaTime;
+            float mouseY = Input.GetAxis("Mouse Y") * mouseSensitivity * Time.deltaTime;
 
-        yRotation += mouseX;
-       // yRotation = Mathf.Clamp(yRotation, -180, 180);
+            yRotation += mouseX;
+            // yRotation = Mathf.Clamp(yRotation, -180, 180);
 
 
-        xRotation -= mouseY;
-        xRotation = Mathf.Clamp(xRotation, -90, 90);
+            xRotation -= mouseY;
+            xRotation = Mathf.Clamp(xRotation, -90, 90);
 
-        transform.localRotation = Quaternion.Euler(xRotation, yRotation, 0f);
-        playerBody.Rotate(Vector3.up * mouseX);
-        //gunHold.Rotate(Vector3.up * mouseX);
-        gun.Rotate(Vector3.up * mouseX);
+            transform.localRotation = Quaternion.Euler(xRotation, yRotation, 0f);
+            playerBody.Rotate(Vector3.up * mouseX);
+            //gunHold.Rotate(Vector3.up * mouseX);
+            gun.Rotate(Vector3.up * mouseX);
+        }
+        
     }
 }

@@ -98,7 +98,7 @@ public class gunManager : MonoBehaviour
     {
         if(isHold)
         {            
-            if(Input.GetKeyDown(KeyCode.Mouse0)  && Time.time >= nextTimeToFire-0.01f)
+            if(Input.GetKeyDown(KeyCode.Mouse0)  && Time.time >= nextTimeToFire-0.01f && GetComponent<attachmentMenager>().isShown == false)
             {
 
                 nextTimeToFire = Time.time + 1f / fireRate;
@@ -110,7 +110,7 @@ public class gunManager : MonoBehaviour
                 }
             }
 
-            if (Input.GetKey(KeyCode.Mouse0) && !isSemi && !isBurst && isAutomatic && Time.time >= nextTimeToFire)
+            if (Input.GetKey(KeyCode.Mouse0) && !isSemi && !isBurst && isAutomatic && Time.time >= nextTimeToFire && GetComponent<attachmentMenager>().isShown == false)
             {
                 nextTimeToFire = Time.time + 1f / fireRate;
                 fire();
@@ -122,7 +122,7 @@ public class gunManager : MonoBehaviour
                 bulletsFiredNonstop = 0;
             }
 
-            if (Input.GetKeyDown(KeyCode.R) && !isReloading)
+            if (Input.GetKeyDown(KeyCode.R) && !isReloading && GetComponent<attachmentMenager>().isShown == false)
             {
                 if (ammoInMagazine <= magazineSpace && ammoQuantity > 0)
                     reloadCoroutine = StartCoroutine( reloadTimeTick(reloadTime));               
@@ -155,7 +155,11 @@ public class gunManager : MonoBehaviour
                     
                 
                 
-            }          
+            }
+            if (Input.GetKeyDown(KeyCode.Backslash))
+            {
+                GetComponent<attachmentMenager>().panelShow();
+            }
         }
     
     }

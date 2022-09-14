@@ -57,6 +57,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\SampleSceneAssets\TutorialInfo\Scripts\Editor\ReadmeEditor.cs" />
+    <Compile Include="Assets\ScriptCalculator\Editor\ScriptCalculator.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">

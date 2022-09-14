@@ -1,19 +1,44 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class attachmentMenager : MonoBehaviour
-{
-
-    public Transform scopeTransform, magazineTransform, barrelTransform, sRailTransform, eRailTransform, oRailTransform, bulletShellTransform;
-    public GameObject scopeGO, magazineGO, barrelGO, sRailGO, eRailGO, oRailGO;
+{       
+    public Transform scopeTransform, magazineTransform, barrelTransform, sRailTransform, eRailTransform, stockTransform, bulletShellTransform;
+    public GameObject scopeGO, magazineGO, barrelGO, sRailGO, eRailGO, stockGO;
 
     public float damage, reloadSpeed, recoilMultiplier, zoomOnAim;
     public int magazineSpace;
 
+    [Space]
+    public int maxQuickInventory = 2;
+    [Space]
+    public ObjectsManager[] scopeQuick;
+    public ObjectsManager[] magazineQuick;
+    public ObjectsManager[] barrellQuick;
+    public ObjectsManager[] sRailQuick;
+    public ObjectsManager[] eRailQuick;
+    public ObjectsManager[] stockQuick;
+
+    [Space]
+    [Header("Hud quick attachment")]
+    public Image weaponHud;
+    public bool isShown = false;
+    public Button[] scopeBtn;
+    public Button[] magazineBtn;
+    public Button[] barrellBtn;
+    public Button[] sRailBtn;
+    public Button[] eRailBtn;
+    public Button[] stockBtn;
+
+
+
     private void Start()
     {
-        if(scopeGO != null)
+        weaponHud.gameObject.SetActive(false);
+
+        if (scopeGO != null)
             changeAttachment(scopeGO.GetComponent<ObjectsManager>());
 
         if(magazineGO != null)        
@@ -28,8 +53,55 @@ public class attachmentMenager : MonoBehaviour
         if (eRailGO != null)
             changeAttachment(eRailGO.GetComponent<ObjectsManager>());
 
-        if (oRailGO != null)
-            changeAttachment(oRailGO.GetComponent<ObjectsManager>());
+        if (stockGO != null)
+            changeAttachment(stockGO.GetComponent<ObjectsManager>());
+
+        hudStart();
+
+        scopeBtn[0].GetComponent<Button>();
+        scopeBtn[0].onClick.AddListener(delegate {
+            ObjectsManager toChange = scopeGO.GetComponent<ObjectsManager>();
+            changeAttachment(scopeQuick[0]);
+            scopeQuick[0] = toChange.GetComponent<ObjectsManager>(); 
+        });
+        
+        scopeBtn[1].GetComponent<Button>();
+        scopeBtn[1].onClick.AddListener(delegate {
+            ObjectsManager toChange = scopeGO.GetComponent<ObjectsManager>();
+            changeAttachment(scopeQuick[1]);
+            scopeQuick[1] = toChange.GetComponent<ObjectsManager>(); 
+        });
+
+        scopeBtn[2].GetComponent<Button>();
+        scopeBtn[2].onClick.AddListener(delegate {
+            ObjectsManager toChange = scopeGO.GetComponent<ObjectsManager>();
+            changeAttachment(scopeQuick[2]);
+            scopeQuick[2] = toChange.GetComponent<ObjectsManager>();
+        });
+
+
+        magazineBtn[0].GetComponent<Button>();
+        magazineBtn[0].onClick.AddListener(delegate {
+            ObjectsManager toChange = magazineGO.GetComponent<ObjectsManager>();
+            changeAttachment(magazineQuick[0]);
+            magazineQuick[0] = toChange.GetComponent<ObjectsManager>();
+        });
+
+        magazineBtn[1].GetComponent<Button>();
+        magazineBtn[1].onClick.AddListener(delegate {
+            ObjectsManager toChange = magazineGO.GetComponent<ObjectsManager>();
+            changeAttachment(magazineQuick[1]);
+            magazineQuick[1] = toChange.GetComponent<ObjectsManager>();
+        });
+
+        magazineBtn[2].GetComponent<Button>();
+        magazineBtn[2].onClick.AddListener(delegate {
+            ObjectsManager toChange = magazineGO.GetComponent<ObjectsManager>();
+            changeAttachment(magazineQuick[2]);
+            magazineQuick[2] = toChange.GetComponent<ObjectsManager>();
+        });
+
+
     }
 
     //thism ethod changes the attachment from the current one to a new one changing the stats as well
@@ -44,10 +116,9 @@ public class attachmentMenager : MonoBehaviour
                     if (scopeGO != null)
                     {
                         detachAttachment(scopeGO);                       
-                    }
-                   
+                    }                  
                     addAttachment(item.gameObject, scopeTransform);
-                    
+                    scopeGO = item.gameObject;
                     break;
 
                 case attachment.AttachmentTypes.magazine:
@@ -57,11 +128,21 @@ public class attachmentMenager : MonoBehaviour
                     }
                     addAttachment(item.gameObject, magazineTransform);
                     updateStats(att);               
-                    magazineSpace = att.magazineSpace; 
+                    magazineSpace = att.magazineSpace;
+                    magazineGO.GetComponent<ObjectsManager>().quantity = GetComponent<gunManager>().ammoInMagazine;
+                    magazineGO = item.gameObject;
                     this.GetComponent<gunManager>().ammoType = magazineGO.GetComponent<attachment>().ammoType;
                     this.GetComponent<gunManager>().bulletShellGo = att.bulletShell;
                     this.GetComponent<gunManager>().bulletGo = att.bulletShell;
                     this.GetComponent<gunManager>().magazineSpace = magazineSpace;
+
+                    if (GetComponentInParent<InventoryManager>())
+                    {                      
+                        GetComponentInParent<InventoryManager>().updateAmmolist(item);
+                        GetComponent<gunManager>().ammoInMagazine = magazineGO.GetComponent<ObjectsManager>().quantity;
+                        GetComponentInParent<InventoryManager>().mng.updateText(GetComponentInParent<InventoryManager>().mng.magazine, ""+GetComponent<gunManager>().ammoInMagazine);
+                    }
+                        
 
                     break;
 
@@ -71,7 +152,9 @@ public class attachmentMenager : MonoBehaviour
                         detachAttachment(barrelGO);
                     }
                     addAttachment(item.gameObject, barrelTransform);
+                    barrelGO = item.gameObject;
                     updateStats(att,false);
+
                     break;
 
                 case attachment.AttachmentTypes.eRail:
@@ -80,6 +163,7 @@ public class attachmentMenager : MonoBehaviour
                         detachAttachment(eRailGO);
                     }
                     addAttachment(item.gameObject, eRailTransform);
+                    eRailGO = item.gameObject;
                     updateStats(att, false);
                     break;
 
@@ -89,15 +173,17 @@ public class attachmentMenager : MonoBehaviour
                         detachAttachment(sRailGO);
                     }
                     addAttachment(item.gameObject, sRailTransform);
+                    sRailGO = item.gameObject;
                     updateStats(att, false);
                     break;
 
-                case attachment.AttachmentTypes.oRail:
-                    if (oRailGO != null)
+                case attachment.AttachmentTypes.stock:
+                    if (stockGO != null)
                     {
-                        detachAttachment(oRailGO);
+                        detachAttachment(stockGO);
                     }
-                    addAttachment(item.gameObject, oRailTransform);
+                    addAttachment(item.gameObject, stockTransform);
+                    stockGO = item.gameObject;
                     updateStats(att, false);
                     break;
                 default:
@@ -145,6 +231,68 @@ public class attachmentMenager : MonoBehaviour
         if (GetComponentInParent<InventoryManager>())
         {
             GetComponentInParent<InventoryManager>().addItemToInventory(item.GetComponent<ObjectsManager>());
-        }        
+        }
+        else
+        {
+            item.gameObject.transform.position = new Vector3(gameObject.transform.position.x + 1, 1, gameObject.transform.position.z + 1);
+        }
+    }
+
+    //this method shows the panel for the quick inventory attachments changes
+    public void panelShow()
+    {
+        if (isShown)
+        {
+            weaponHud.gameObject.SetActive(false);
+            isShown = false;
+            Cursor.lockState = CursorLockMode.Locked;
+            transform.localPosition = GetComponent<gunManager>().holdPosition;          
+            gameObject.transform.localEulerAngles = GetComponent<gunManager>().holdOffsetRotation;
+            GetComponentInParent<playerRotation>().canRotate = true;
+
+        }
+        else
+        {
+            weaponHud.gameObject.SetActive(true);
+            isShown = true;
+            Cursor.lockState = CursorLockMode.None;
+            gameObject.transform.localPosition = new Vector3(.3f,0,.90f);           
+            gameObject.transform.localEulerAngles = new Vector3(0f,-90f,0f);
+            GetComponentInParent<playerRotation>().canRotate = false;
+        }
+    }
+
+    private void hudStart()
+    {
+        if (maxQuickInventory == 0)
+        {
+            for(int i = 0; i < scopeBtn.Length; i++)
+            {
+                scopeBtn[i].gameObject.SetActive(false);
+                magazineBtn[i].gameObject.SetActive(false);
+                barrellBtn[i].gameObject.SetActive(false);
+                sRailBtn[i].gameObject.SetActive(false);
+                eRailBtn[i].gameObject.SetActive(false);
+                stockBtn[i].gameObject.SetActive(false);
+            }
+        }
+        else
+        {
+            for (int i = scopeBtn.Length-1; i >= maxQuickInventory; i--)
+            {
+                if (scopeBtn[i] != null)
+                    scopeBtn[i].gameObject.SetActive(false);
+                if (magazineBtn[i] != null)
+                    magazineBtn[i].gameObject.SetActive(false);
+                if (barrellBtn[i] != null)
+                    barrellBtn[i].gameObject.SetActive(false);
+                if (sRailBtn[i] != null)
+                    sRailBtn[i].gameObject.SetActive(false);
+                if (eRailBtn[i] != null)
+                    eRailBtn[i].gameObject.SetActive(false);
+                if (stockBtn[i] != null)
+                    stockBtn[i].gameObject.SetActive(false);
+            }
+        }
     }
 }

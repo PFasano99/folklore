@@ -79,14 +79,14 @@ public class playerController : MonoBehaviour
 
         if (Input.GetKey(KeyCode.Mouse1))
         {
-            if (inventory.weaponsNumber > 0)
+            if (inventory.weaponsNumber > 0 && inventory.equipedWeapons[0].GetComponent<attachmentMenager>().isShown == false)
                 aim();
         }
 
         if (Input.GetKeyUp(KeyCode.Mouse1))
         {          
             if (isRightHandFull)
-                if (inventory.equipedWeapons[0])
+                if (inventory.equipedWeapons[0] && inventory.equipedWeapons[0].GetComponent<attachmentMenager>().isShown == false)
                 {
                     inventory.equipedWeapons[0].transform.localPosition = inventory.equipedWeapons[0].GetComponent<gunManager>().holdPosition;
                     Camera.main.fieldOfView = 60;
@@ -350,7 +350,7 @@ public class playerController : MonoBehaviour
     {
 
         if (isRightHandFull)
-            if (inventory.equipedWeapons[0])
+            if (inventory.equipedWeapons[0] )
             {
                 //gunHold.transform.localPosition = new Vector3(0f, -0.3f, 0.7f);
 

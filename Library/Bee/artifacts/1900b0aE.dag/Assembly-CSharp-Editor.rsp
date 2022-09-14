@@ -354,6 +354,7 @@
 -r:"Library/Bee/artifacts/1900b0aE.dag/UnityEngine.UI.ref.dll"
 -r:"Library/Bee/artifacts/1900b0aE.dag/VSSettingsProvider.ref.dll"
 "Assets/SampleSceneAssets/TutorialInfo/Scripts/Editor/ReadmeEditor.cs"
+"Assets/ScriptCalculator/Editor/ScriptCalculator.cs"
 -langversion:8.0
 
 /deterministic
