@@ -8,7 +8,7 @@ public class attachmentMenager : MonoBehaviour
     public Transform scopeTransform, magazineTransform, barrelTransform, sRailTransform, eRailTransform, stockTransform, bulletShellTransform;
     public GameObject scopeGO, magazineGO, barrelGO, sRailGO, eRailGO, stockGO;
 
-    public float damage, reloadSpeed, recoilMultiplier, zoomOnAim;
+    public float damage, reloadSpeed, recoilMultiplier, zoomOnAim, mobility, fireRateo, range;
     public int magazineSpace;
 
     [Space]
@@ -32,29 +32,45 @@ public class attachmentMenager : MonoBehaviour
     public Button[] eRailBtn;
     public Button[] stockBtn;
 
-
-
     private void Start()
     {
         weaponHud.gameObject.SetActive(false);
 
-        if (scopeGO != null)
+        if (scopeTransform.childCount > 0)
+        {
+            scopeGO = scopeTransform.GetChild(0).gameObject;
             changeAttachment(scopeGO.GetComponent<ObjectsManager>());
+        }
 
-        if(magazineGO != null)        
+        if (magazineTransform.childCount > 0)
+        {
+            magazineGO = magazineTransform.GetChild(0).gameObject;
             changeAttachment(magazineGO.GetComponent<ObjectsManager>());
-                 
-        if(barrelGO != null)
+        }
+
+        if (barrelTransform.childCount > 0)
+        {
+            barrelGO = barrelTransform.GetChild(0).gameObject;
             changeAttachment(barrelGO.GetComponent<ObjectsManager>());
+        }
 
-        if(sRailGO != null)
+        if (sRailTransform.childCount > 0)
+        {
+            sRailGO = sRailTransform.GetChild(0).gameObject;
             changeAttachment(sRailGO.GetComponent<ObjectsManager>());
+        }
 
-        if (eRailGO != null)
+        if (eRailTransform.childCount > 0)
+        {
+            eRailGO = eRailTransform.GetChild(0).gameObject;
             changeAttachment(eRailGO.GetComponent<ObjectsManager>());
+        }
 
-        if (stockGO != null)
+        if (stockTransform.childCount > 0)
+        {
+            stockGO = stockTransform.GetChild(0).gameObject;
             changeAttachment(stockGO.GetComponent<ObjectsManager>());
+        }     
 
         hudStart();
 
@@ -104,7 +120,7 @@ public class attachmentMenager : MonoBehaviour
 
     }
 
-    //thism ethod changes the attachment from the current one to a new one changing the stats as well
+    //this method changes the attachment from the current one to a new one changing the stats as well
     public void changeAttachment(ObjectsManager item)
     {
         if(item.gameObject.GetComponent<attachment>())
@@ -138,9 +154,10 @@ public class attachmentMenager : MonoBehaviour
 
                     if (GetComponentInParent<InventoryManager>())
                     {                      
-                        GetComponentInParent<InventoryManager>().updateAmmolist(item);
+                        GetComponentInParent<InventoryManager>().updateAmmolist(item);                       
                         GetComponent<gunManager>().ammoInMagazine = magazineGO.GetComponent<ObjectsManager>().quantity;
                         GetComponentInParent<InventoryManager>().mng.updateText(GetComponentInParent<InventoryManager>().mng.magazine, ""+GetComponent<gunManager>().ammoInMagazine);
+                        GetComponentInParent<InventoryManager>().addActiveAmmo(GetComponent<gunManager>().gameObject.GetComponent<ObjectsManager>());
                     }
                         
 

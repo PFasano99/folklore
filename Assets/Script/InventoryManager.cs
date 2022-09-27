@@ -64,6 +64,7 @@ public class InventoryManager : MonoBehaviour
     {
         if (newBackpack.spaceAdded > backpack.spaceAdded)
         {
+
             newBackpack.gameObject.transform.position = tpPoint;
             freeSpace = newBackpack.spaceAdded - backpack.spaceAdded;
 
@@ -222,33 +223,37 @@ public class InventoryManager : MonoBehaviour
         {
             weaponsNumber++;
             equipedWeapons.Add(item.GetComponent<gunManager>());
-            if(activeAmmos==null)
-            {
-                activeAmmos.Add(item.gameObject.GetComponent<gunManager>().ammoType);
-            }
-            else
-            {
-                bool found = false;
-                foreach (bulletType.AmmoType t in activeAmmos)
-                {
-                    if (t == item.gameObject.GetComponent<gunManager>().ammoType)
-                    {
-                        found = true;
-                        updateWeaponsAmmo();
-                        break;
-                    }                   
-                }
-                if (!found)
-                {
-                    activeAmmos.Add(item.gameObject.GetComponent<gunManager>().ammoType);
-                    updateWeaponsAmmo();
-                }
-                    
-            }                  
+            addActiveAmmo(item);                 
         }
         else if (!addItemToInventory(item))
             Debug.Log("inventario pieno");
             
+    }
+
+    public void addActiveAmmo(ObjectsManager item)
+    {
+        if (activeAmmos == null)
+        {
+            activeAmmos.Add(item.gameObject.GetComponent<gunManager>().ammoType);
+        }
+        else
+        {
+            bool found = false;
+            foreach (bulletType.AmmoType t in activeAmmos)
+            {
+                if (t == item.gameObject.GetComponent<gunManager>().ammoType)
+                {
+                    found = true;                    
+                    break;
+                }
+            }
+            if (!found)
+            {
+                activeAmmos.Add(item.gameObject.GetComponent<gunManager>().ammoType);           
+            }
+
+        }
+        updateWeaponsAmmo();
     }
 
     //this method updates the list of all ammo adding the ones that are not present and updating the quantity for the ones present

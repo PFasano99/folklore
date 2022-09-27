@@ -165,7 +165,7 @@ public class playerController : MonoBehaviour
                     }
                     else if (inventory.weaponsNumber < inventory.maxWeapons)
                     {                  
-                        gunMenager2 = hold.GetComponent<itemsMenager>().GetComponent<gunManager>();
+                        gunMenager2 = hold.GetComponent<gunManager>();
                         gunMenager2.gameObject.transform.parent = gunAdditional.gameObject.transform;
                         gunMenager2.gameObject.transform.localEulerAngles = backRotation;
                         gunMenager2.gameObject.transform.localPosition = gunAdditional.gameObject.transform.position;
